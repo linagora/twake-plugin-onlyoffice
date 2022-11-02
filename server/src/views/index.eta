@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script type="text/javascript" src="<%= it.onlyoffice_server %>/web-apps/apps/api/documents/api.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,shrink-to-fit=no" />
+  </head>
+
+  <body style="height: 100%">
+    <div
+      id="onlyoffice_container"
+      style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; color: #fff; text-align: center; background-color: <%= it.color %>"
+    ></div>
+    <script type="text/javascript">
+      window.workspaceId = "<%= it.workspaceId %>";
+      window.user = {
+        id: "<%= it.userid %>",
+        username: "<%= it.username %>",
+        language: "<%= it.language %>",
+        userimage: "<%= it.user_image %>"
+      };
+      window.mode = "<%= it.mode %>"
+      window.baseURL = `<%= it.server %>only_office/${window.mode}/`;
+
+      const openFile = doc => {
+        $('#onlyoffice_container').html("<div id='onlyoffice_container_instance'></div>");
+
+        window.docEditor = new DocsAPI.docEditor('onlyoffice_container_instance', {
+          scrollSensitivity: window.mode === 'text' ? 100 : 40,
+          width: '100%',
+          height: '100%',
+          documentType: window.mode,
+          token: doc.token,
+          type: screen.width < 600 ? 'mobile' : 'desktop',
+          editorConfig: {
+            callbackUrl: `${window.baseURL}save?groupId=${doc.group_id}`,
+            lang: window.user.language,
+            user: {
+              id: window.user.id,
+              name: window.user.username,
+            },
+            customization: {
+              chat: false,
+              compactToolbar: true,
+              about: false,
+              feedback: false,
+              goback: {
+                text: '',
+                blank: false,
+                url: '#',
+              },
+            },
+          },
+        });
+      };
+
+      $.post(`${window.baseUrl}open`, {
+        file_id: "<%= it.file_id %>",
+        filename: "<%= it.filename %>",
+        workspace_id: "<%= it.workspace_id %>",
+        user_id: "<%= it.user_id %>",
+        group_id: "<%= it.group_id %>",
+      }, function(response) {
+        let doc = {
+          title: response.filename,
+          url: `${window.baseUrl}read?file_token=${response.token}&file_id=${response.file_id}&group_id=${response.group_id}`,
+          fileType: "<%= it.fileType %>",
+          key: response.key,
+          token: reponse.token,
+          permissions: {
+            download: true,
+            edit: !<%= it.preview %>,
+            review: !<%= it.preview %>,
+          }
+        }
+
+        console.debug("document read", doc);
+
+        openFile(doc);
+      });
+    </script>
+  </body>
+</html>
