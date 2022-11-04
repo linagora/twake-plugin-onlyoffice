@@ -1,6 +1,6 @@
 import { IApiServiceRequestParams, IApiService } from '@/interfaces/api.interface';
-import axios, { Axios } from 'axios';
-
+import axios, { Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { TWAKE_API } from '@config';
 class ApiService implements IApiService {
   private axios: Axios;
 
@@ -8,23 +8,37 @@ class ApiService implements IApiService {
     this.axios = axios.create({
       baseURL,
     });
+
+    this.axios.interceptors.response.use(this.handleResponse, this.handleErrors);
   }
 
   public get = async <T>(params: IApiServiceRequestParams<T>): Promise<T> => {
-    const { url } = params;
+    const { url, token } = params;
 
-    const response = await this.axios.get(url);
-
-    return response.data as T;
+    return await this.axios.get(url, this.getRequestConfig(token));
   };
 
-  public post = async <T>(params: IApiServiceRequestParams<T>): Promise<T> => {
-    const { url, payload } = params;
+  public post = async <T, R>(params: IApiServiceRequestParams<T>): Promise<R> => {
+    const { url, payload, token } = params;
 
-    const response = await this.axios.post(url, payload);
-
-    return response.data as T;
+    return await this.axios.post(url, payload, this.getRequestConfig(token));
   };
+
+  private getRequestConfig = (token: string): AxiosRequestConfig => {
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+  };
+
+  private handleErrors = (error: any): Promise<any> => {
+    console.debug('Request Failed', error.message);
+
+    return Promise.reject(error);
+  };
+
+  private handleResponse = <T>({ data }: AxiosResponse): T => data;
 }
 
-export default ApiService;
+export default new ApiService(TWAKE_API);

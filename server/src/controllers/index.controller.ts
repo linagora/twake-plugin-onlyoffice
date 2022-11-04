@@ -1,23 +1,34 @@
-import EditorService from '@/services/editor.service';
+import editorService from '@/services/editor.service';
 import { NextFunction, Request, Response } from 'express';
 
+interface RequestQuery {
+  mode: string;
+  company_id: string;
+  preview: string;
+  token: string;
+  file_id: string;
+}
+
 class IndexController {
-  constructor(private readonly editorService: EditorService) {}
-
-  public index = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public index = async (req: Request<{}, {}, {}, RequestQuery>, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { file_id, group_id, preview, workspace_id, mode } = req.params;
+      const { file_id, preview, company_id, mode, token } = req.query;
 
-      const initResponse = await this.editorService.init(
+      const initResponse = await editorService.init(
         {
           file_id,
-          group_id,
           preview,
-          workspace_id,
+          token,
+          company_id,
         },
         mode,
       );
-      res.render('index', initResponse);
+
+      res.render('index', {
+        ...initResponse,
+        server: `${req.protocol}://${req.get('host')}/`,
+        token,
+      });
     } catch (error) {
       next(error);
     }

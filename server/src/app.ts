@@ -5,6 +5,7 @@ import cors from 'cors';
 import { renderFile } from 'eta';
 import path from 'path';
 import errorMiddleware from './middlewares/error.middleware';
+import { PORT } from '@config';
 
 class App {
   public app: express.Application;
@@ -22,8 +23,8 @@ class App {
   }
 
   public listen = () => {
-    this.app.listen(this.port || 3000, () => {
-      console.debug(`🚀 App listening on port ${this.port || 3000}`);
+    this.app.listen(PORT, () => {
+      console.debug(`🚀 App listening on port ${PORT}`);
     });
   };
 

@@ -1,28 +1,43 @@
 import { EditConfigInitResult, EditorInitRequestParams, IEditorService, ModeParametersType } from '@/interfaces/editor.interface';
+import userService from './user.service';
+import { ONLY_OFFICE_SERVER } from '@config';
+import fileService from './file.service';
 
 class EditorService implements IEditorService {
-  constructor(private readonly Api) {}
-
   public init = async (request: EditorInitRequestParams, mode: string): Promise<EditConfigInitResult> => {
-    const { file_id, group_id, preview, workspace_id } = request;
+    const { file_id, preview, company_id, token } = request;
     const { color, mode: fileMode } = this.getModeParams(mode);
+    const user = await userService.getCurrentUser(token);
+
+    if (!user) {
+      throw Error("can't find connected user");
+    }
+
+    const file = await fileService.get(
+      {
+        file_id,
+        company_id,
+      },
+      token,
+    );
+
+    if (!file) {
+      throw Error("can't find file");
+    }
 
     return {
       color,
-      default_extension: '',
       file_id,
-      file_type: '',
-      filename: '',
-      group_id,
-      language: '',
+      file_type: file.metadata.name.split('.').pop(),
+      filename: file.metadata.name,
+      language: user.preferences.locale || 'en',
       mode: fileMode,
-      onlyoffice_server: '',
+      onlyoffice_server: ONLY_OFFICE_SERVER,
       preview: preview ? 'true' : 'false',
-      user_id: '',
-      server: '',
-      user_image: '',
-      username: '',
-      workspace_id,
+      user_id: user.id,
+      user_image: user.thumbnail || user.picture || '',
+      username: user.username,
+      company_id,
     };
   };
 
@@ -48,4 +63,4 @@ class EditorService implements IEditorService {
   };
 }
 
-export default EditorService;
+export default new EditorService();

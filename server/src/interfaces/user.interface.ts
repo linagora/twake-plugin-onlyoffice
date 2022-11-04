@@ -1,8 +1,14 @@
 export type UserType = {
   id: string;
-  name: string;
+  username: string;
+  thumbnail: string;
+  picture: string;
+  email: string;
+  preferences: {
+    locale: string;
+  };
 };
 
 export interface IuserService {
-  get: (id: string, token: string) => Promise<UserType>;
+  getCurrentUser: (token: string) => Promise<UserType>;
 }

@@ -1,8 +1,8 @@
 export type EditorInitRequestParams = {
-  workspace_id: string;
-  group_id: string;
   file_id: string;
   preview: string;
+  company_id: string;
+  token: string;
 };
 
 export type EditConfigInitResult = {
@@ -12,13 +12,10 @@ export type EditConfigInitResult = {
   user_image: string;
   mode: string;
   onlyoffice_server: string;
-  default_extension: string;
   color: string;
-  workspace_id: string;
-  server: string;
+  company_id: string;
   file_id: string;
   filename: string;
-  group_id: string;
   file_type: string;
   preview: string;
 };

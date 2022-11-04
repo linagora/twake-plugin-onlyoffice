@@ -1,14 +1,21 @@
-import { IApiService } from '@/interfaces/api.interface';
 import { IuserService, UserType } from '@/interfaces/user.interface';
+import apiService from './api.service';
 
 class UserService implements IuserService {
-  constructor(private readonly Api: IApiService) {}
+  public getCurrentUser = async (token: string): Promise<UserType> => {
+    try {
+      const { resource } = await apiService.get<{ resource: UserType }>({
+        url: '/users/v1/users/me',
+        token,
+      });
 
-  public get = async (): Promise<UserType> => {
-    return await this.Api.get<UserType>({
-      url: '/api/user',
-    });
+      return resource;
+    } catch (error) {
+      console.error('Failed to fetch the current user', error.message);
+
+      return Promise.reject();
+    }
   };
 }
 
-export default UserService;
+export default new UserService();
