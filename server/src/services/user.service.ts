@@ -13,7 +13,7 @@ class UserService implements IuserService {
     } catch (error) {
       console.error('Failed to fetch the current user', error.message);
 
-      return Promise.reject();
+      return null;
     }
   };
 }

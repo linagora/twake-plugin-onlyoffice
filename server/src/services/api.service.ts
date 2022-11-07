@@ -8,7 +8,7 @@ class ApiService implements IApiService {
     this.axios = axios.create({
       baseURL,
       headers: {
-        Authorization: `Basic ${Buffer.from(`${APP_ID}:${APP_SECRET}`)}`,
+        Authorization: `Basic ${Buffer.from(`${APP_ID}:${APP_SECRET}`).toString('base64')}`,
       },
     });
 
