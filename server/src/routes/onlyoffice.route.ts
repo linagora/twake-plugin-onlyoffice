@@ -1,5 +1,7 @@
 import OnlyOfficeController from '@/controllers/onlyoffice.controller';
 import { Routes } from '@/interfaces/routes.interface';
+import authMiddleware from '@/middlewares/auth.middleware';
+import requirementsMiddleware from '@/middlewares/requirements.middleware';
 import { Router } from 'express';
 
 class OnlyOfficeRoute implements Routes {
@@ -13,7 +15,7 @@ class OnlyOfficeRoute implements Routes {
   }
 
   private initRoutes = () => {
-    this.router.get(`${this.path}/:mode/read`, this.onlyOfficeController.read);
+    this.router.get(`${this.path}/:mode/read`, requirementsMiddleware, authMiddleware, this.onlyOfficeController.read);
   };
 }
 

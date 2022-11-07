@@ -2,12 +2,11 @@ import { FileRequestParams, FileType, IFileService } from '@/interfaces/file.int
 import apiService from './api.service';
 
 class FileService implements IFileService {
-  public get = async (params: FileRequestParams, token: string): Promise<FileType> => {
+  public get = async (params: FileRequestParams): Promise<FileType> => {
     try {
       const { company_id, file_id } = params;
       const { resource } = await apiService.get<{ resource: FileType }>({
         url: `/files/v1/companies/${company_id}/files/${file_id}`,
-        token,
       });
 
       return resource;
@@ -18,12 +17,11 @@ class FileService implements IFileService {
     }
   };
 
-  public download = async (params: FileRequestParams, token: string): Promise<any> => {
+  public download = async (params: FileRequestParams): Promise<any> => {
     try {
       const { company_id, file_id } = params;
       const file = await apiService.get({
         url: `/files/v1/companies/${company_id}/files/${file_id}/download`,
-        token,
       });
 
       return file;

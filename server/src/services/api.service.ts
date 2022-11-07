@@ -1,12 +1,15 @@
 import { IApiServiceRequestParams, IApiService } from '@/interfaces/api.interface';
 import axios, { Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { TWAKE_API } from '@config';
+import { TWAKE_API, APP_ID, APP_SECRET } from '@config';
 class ApiService implements IApiService {
   private axios: Axios;
 
   constructor(baseURL: string) {
     this.axios = axios.create({
       baseURL,
+      headers: {
+        Authorization: `Basic ${Buffer.from(`${APP_ID}:${APP_SECRET}`)}`,
+      },
     });
 
     this.axios.interceptors.response.use(this.handleResponse, this.handleErrors);
@@ -15,21 +18,23 @@ class ApiService implements IApiService {
   public get = async <T>(params: IApiServiceRequestParams<T>): Promise<T> => {
     const { url, token } = params;
 
-    return await this.axios.get(url, this.getRequestConfig(token));
+    if (token) {
+      const config: AxiosRequestConfig = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      return this.axios.get(url, config);
+    }
+
+    return await this.axios.get(url);
   };
 
   public post = async <T, R>(params: IApiServiceRequestParams<T>): Promise<R> => {
-    const { url, payload, token } = params;
+    const { url, payload } = params;
 
-    return await this.axios.post(url, payload, this.getRequestConfig(token));
-  };
-
-  private getRequestConfig = (token: string): AxiosRequestConfig => {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+    return await this.axios.post(url, payload);
   };
 
   private handleErrors = (error: any): Promise<any> => {

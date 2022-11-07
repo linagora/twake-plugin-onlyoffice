@@ -1,7 +1,7 @@
 export interface IApiServiceRequestParams<T> {
   url: string;
   payload?: T;
-  token: string;
+  token?: string;
 }
 
 export interface IApiService {

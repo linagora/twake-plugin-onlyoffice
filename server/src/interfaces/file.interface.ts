@@ -15,6 +15,6 @@ export type FileRequestParams = {
 };
 
 export interface IFileService {
-  get: (params: FileRequestParams, token: string) => Promise<FileType>;
-  download: (params: FileRequestParams, token: string) => Promise<any>;
+  get: (params: FileRequestParams) => Promise<FileType>;
+  download: (params: FileRequestParams) => Promise<any>;
 }

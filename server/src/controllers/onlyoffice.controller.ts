@@ -3,22 +3,18 @@ import { Request, Response, NextFunction } from 'express';
 
 interface RequestQuery {
   company_id: string;
-  token: string;
   file_id: string;
 }
 
 class OnlyOfficeController {
   public read = async (req: Request<{}, {}, {}, RequestQuery>, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { file_id, company_id, token } = req.query;
+      const { file_id, company_id } = req.query;
 
-      const file = await fileService.download(
-        {
-          company_id,
-          file_id,
-        },
-        token,
-      );
+      const file = await fileService.download({
+        company_id,
+        file_id,
+      });
 
       res.send(file);
     } catch (error) {

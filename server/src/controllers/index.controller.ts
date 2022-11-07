@@ -13,6 +13,7 @@ class IndexController {
   public index = async (req: Request<{}, {}, {}, RequestQuery>, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { file_id, preview, company_id, mode, token } = req.query;
+      const { user } = req;
 
       const initResponse = await editorService.init(
         {
@@ -20,6 +21,7 @@ class IndexController {
           preview,
           token,
           company_id,
+          user,
         },
         mode,
       );

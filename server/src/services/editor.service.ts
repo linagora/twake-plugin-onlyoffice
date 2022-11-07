@@ -1,25 +1,16 @@
 import { EditConfigInitResult, EditorInitRequestParams, IEditorService, ModeParametersType } from '@/interfaces/editor.interface';
-import userService from './user.service';
 import { ONLY_OFFICE_SERVER } from '@config';
 import fileService from './file.service';
 
 class EditorService implements IEditorService {
   public init = async (request: EditorInitRequestParams, mode: string): Promise<EditConfigInitResult> => {
-    const { file_id, preview, company_id, token } = request;
+    const { file_id, preview, company_id, user } = request;
     const { color, mode: fileMode } = this.getModeParams(mode);
-    const user = await userService.getCurrentUser(token);
 
-    if (!user) {
-      throw Error("can't find connected user");
-    }
-
-    const file = await fileService.get(
-      {
-        file_id,
-        company_id,
-      },
-      token,
-    );
+    const file = await fileService.get({
+      file_id,
+      company_id,
+    });
 
     if (!file) {
       throw Error("can't find file");
