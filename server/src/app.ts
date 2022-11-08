@@ -6,6 +6,7 @@ import { renderFile } from 'eta';
 import path from 'path';
 import errorMiddleware from './middlewares/error.middleware';
 import { PORT } from '@config';
+import loggerService from './services/logger.service';
 
 class App {
   public app: express.Application;
@@ -24,7 +25,7 @@ class App {
 
   public listen = () => {
     this.app.listen(PORT, () => {
-      console.debug(`🚀 App listening on port ${PORT}`);
+      loggerService.info(`🚀 App listening on port ${PORT}`);
     });
   };
 

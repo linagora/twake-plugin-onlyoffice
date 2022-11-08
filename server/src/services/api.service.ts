@@ -1,22 +1,27 @@
-import { IApiServiceRequestParams, IApiService } from '@/interfaces/api.interface';
+import {
+  IApiServiceRequestParams,
+  IApiService,
+  IApiServiceApplicationTokenRequestParams,
+  IApiServiceApplicationTokenResponse,
+} from '@/interfaces/api.interface';
 import axios, { Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { TWAKE_API, APP_ID, APP_SECRET } from '@config';
+import { TWAKE_ENDPOINT, APP_ID, APP_SECRET } from '@config';
+import loggerService from './logger.service';
 class ApiService implements IApiService {
   private axios: Axios;
+  private initialized: Promise<string>;
 
-  constructor(baseURL: string) {
-    this.axios = axios.create({
-      baseURL,
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${APP_ID}:${APP_SECRET}`).toString('base64')}`,
-      },
+  constructor() {
+    this.initialized = this.init();
+    this.initialized.catch(error => {
+      loggerService.error('failed to init API', error);
     });
-
-    this.axios.interceptors.response.use(this.handleResponse, this.handleErrors);
   }
 
   public get = async <T>(params: IApiServiceRequestParams<T>): Promise<T> => {
     const { url, token } = params;
+
+    await this.initialized;
 
     if (token) {
       const config: AxiosRequestConfig = {
@@ -34,16 +39,55 @@ class ApiService implements IApiService {
   public post = async <T, R>(params: IApiServiceRequestParams<T>): Promise<R> => {
     const { url, payload } = params;
 
+    await this.initialized;
+
     return await this.axios.post(url, payload);
   };
 
   private handleErrors = (error: any): Promise<any> => {
-    console.debug('Request Failed', error.message);
+    loggerService.error('Failed Request', error.message);
 
     return Promise.reject(error);
   };
 
   private handleResponse = <T>({ data }: AxiosResponse): T => data;
+
+  private init = async (): Promise<string> => {
+    try {
+      const response = await axios.post<IApiServiceApplicationTokenRequestParams, { data: IApiServiceApplicationTokenResponse }>(
+        `${TWAKE_ENDPOINT}api/console/v1/login`,
+        {
+          id: APP_ID,
+          secret: APP_SECRET,
+        },
+        {
+          headers: {
+            Authorization: `Basic ${Buffer.from(`${APP_ID}:${APP_SECRET}`).toString('base64')}`,
+          },
+        },
+      );
+
+      const {
+        resource: {
+          access_token: { value },
+        },
+      } = response.data;
+
+      this.axios = axios.create({
+        baseURL: TWAKE_ENDPOINT,
+        headers: {
+          Authorization: `Bearer ${value}`,
+        },
+      });
+
+      this.axios.interceptors.response.use(this.handleResponse, this.handleErrors);
+
+      return value;
+    } catch (error) {
+      loggerService.error('failed to get application token', error.message);
+      throw Error(error);
+    }
+  };
 }
 
-export default new ApiService(TWAKE_API);
+export default new ApiService();

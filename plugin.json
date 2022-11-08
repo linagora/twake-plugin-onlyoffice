@@ -1,0 +1,12 @@
+{
+  "twake": {
+    "version": 1,
+    "files": {
+      "editor": {
+        "preview_url": "http://localhost:5000/",
+        "edition_url": "http://localhost:5000/",
+        "extensions": ["docx", "doc", "ppt", "odt", "odx", "pptx"]
+      }
+    }
+  }
+}

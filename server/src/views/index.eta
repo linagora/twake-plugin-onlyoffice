@@ -34,10 +34,7 @@
         edit: !<%= it.preview %>,
         review: !<%= it.preview %>,
       }
-    }
-
-    console.debug(doc);
-    
+    }    
 
     window.docEditor = new DocsAPI.DocEditor('onlyoffice_container_instance', {
     scrollSensitivity: window.mode === 'text' ? 100 : 40,
