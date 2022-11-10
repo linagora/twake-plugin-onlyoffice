@@ -1,9 +1,19 @@
 import fileService from '@/services/file.service';
+import loggerService from '@/services/logger.service';
 import { Request, Response, NextFunction } from 'express';
 
 interface RequestQuery {
   company_id: string;
   file_id: string;
+  token: string;
+}
+
+interface SaveRequestBody {
+  filetype: string;
+  key: string;
+  status: number;
+  url: string;
+  users: string[];
 }
 
 class OnlyOfficeController {
@@ -16,7 +26,28 @@ class OnlyOfficeController {
         file_id,
       });
 
-      res.send(file);
+      file.pipe(res);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public save = async (req: Request<{}, {}, SaveRequestBody, RequestQuery>, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { url } = req.body;
+      const { company_id, file_id } = req.query;
+
+      if (url) {
+        await fileService.save({
+          company_id,
+          file_id,
+          url,
+        });
+      }
+
+      res.send({
+        error: 0,
+      });
     } catch (error) {
       next(error);
     }

@@ -5,7 +5,7 @@ import requirementsMiddleware from '@/middlewares/requirements.middleware';
 import { Router } from 'express';
 
 class OnlyOfficeRoute implements Routes {
-  public path = '/only_office';
+  public path = '/';
   public router = Router();
   public onlyOfficeController: OnlyOfficeController;
 
@@ -15,7 +15,8 @@ class OnlyOfficeRoute implements Routes {
   }
 
   private initRoutes = () => {
-    this.router.get(`${this.path}/:mode/read`, requirementsMiddleware, authMiddleware, this.onlyOfficeController.read);
+    this.router.get(`${this.path}:mode/read`, requirementsMiddleware, authMiddleware, this.onlyOfficeController.read);
+    this.router.post(`${this.path}:mode/save`, requirementsMiddleware, authMiddleware, this.onlyOfficeController.save);
   };
 }
 

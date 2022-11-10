@@ -3,9 +3,8 @@ import { ONLY_OFFICE_SERVER } from '@config';
 import fileService from './file.service';
 
 class EditorService implements IEditorService {
-  public init = async (request: EditorInitRequestParams, mode: string): Promise<EditConfigInitResult> => {
+  public init = async (request: EditorInitRequestParams): Promise<EditConfigInitResult> => {
     const { file_id, preview, company_id, user } = request;
-    const { color, mode: fileMode } = this.getModeParams(mode);
 
     const file = await fileService.get({
       file_id,
@@ -15,6 +14,8 @@ class EditorService implements IEditorService {
     if (!file) {
       throw Error("can't find file");
     }
+
+    const { color, mode: fileMode } = this.getFileMode(file.metadata.name);
 
     return {
       color,
@@ -32,25 +33,60 @@ class EditorService implements IEditorService {
     };
   };
 
-  private getModeParams = (mode: string): ModeParametersType => {
-    switch (mode) {
-      case 'presentation':
-      case 'slide':
-        return {
-          mode: 'presentation',
-          color: '#aa5252',
-        };
-      case 'spreadsheet':
-        return {
-          mode,
-          color: '#40865c',
-        };
-      default:
-        return {
-          mode: 'text',
-          color: '#446995',
-        };
+  private getFileMode = (filename: string): ModeParametersType => {
+    const extension = filename.split('.').pop();
+
+    if (
+      [
+        'doc',
+        'docm',
+        'docx',
+        'docxf',
+        'dot',
+        'dotm',
+        'dotx',
+        'epub',
+        'fodt',
+        'fb2',
+        'htm',
+        'html',
+        'mht',
+        'odt',
+        'oform',
+        'ott',
+        'oxps',
+        'pdf',
+        'rtf',
+        'txt',
+        'djvu',
+        'xml',
+        'xps',
+      ].includes(extension)
+    ) {
+      return {
+        mode: 'word',
+        color: '#aa5252',
+      };
     }
+
+    if (['csv', 'fods', 'ods', 'ots', 'xls', 'xlsb', 'xlsm', 'xlsx', 'xlt', 'xltm', 'xltx'].includes(extension)) {
+      return {
+        mode: 'cell',
+        color: '#40865c',
+      };
+    }
+
+    if (['fodp', 'odp', 'otp', 'pot', 'potm', 'potx', 'pps', 'ppsm', 'ppsx', 'ppt', 'pptm', 'pptx'].includes(extension)) {
+      return {
+        mode: 'slide',
+        color: '#aa5252',
+      };
+    }
+
+    return {
+      mode: 'text',
+      color: 'grey',
+    };
   };
 }
 
