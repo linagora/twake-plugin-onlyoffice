@@ -36,7 +36,7 @@ class FileService implements IFileService {
 
   public save = async (params: FileRequestParams): Promise<void> => {
     try {
-      const { company_id, file_id, url } = params;
+      const { company_id, file_id, url, user_id } = params;
 
       if (!url) {
         throw Error('no url found');
@@ -46,6 +46,10 @@ class FileService implements IFileService {
 
       if (!originalFile) {
         throw Error('original file not found');
+      }
+
+      if (originalFile.user_id !== user_id) {
+        throw Error("can't save file, user is not the owner");
       }
 
       const newFile = await apiService.get<Stream>({

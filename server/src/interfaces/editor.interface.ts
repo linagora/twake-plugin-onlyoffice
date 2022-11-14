@@ -2,7 +2,6 @@ import { UserType } from './user.interface';
 
 export type EditorInitRequestParams = {
   file_id: string;
-  preview: string;
   company_id: string;
   token: string;
   user: UserType;
@@ -20,7 +19,8 @@ export type EditConfigInitResult = {
   file_id: string;
   filename: string;
   file_type: string;
-  preview: string;
+  editable: boolean;
+  preview: boolean;
 };
 
 export interface IEditorService {

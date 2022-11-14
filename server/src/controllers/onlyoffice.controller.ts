@@ -1,5 +1,4 @@
 import fileService from '@/services/file.service';
-import loggerService from '@/services/logger.service';
 import { Request, Response, NextFunction } from 'express';
 
 interface RequestQuery {
@@ -42,6 +41,7 @@ class OnlyOfficeController {
           company_id,
           file_id,
           url,
+          user_id: req.user.id,
         });
       }
 

@@ -12,12 +12,11 @@ interface RequestQuery {
 class IndexController {
   public index = async (req: Request<{}, {}, {}, RequestQuery>, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { file_id, preview, company_id, token } = req.query;
+      const { file_id, company_id, token } = req.query;
       const { user } = req;
 
       const initResponse = await editorService.init({
         file_id,
-        preview,
         token,
         company_id,
         user,

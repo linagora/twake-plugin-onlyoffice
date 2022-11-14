@@ -4,7 +4,7 @@ import fileService from './file.service';
 
 class EditorService implements IEditorService {
   public init = async (request: EditorInitRequestParams): Promise<EditConfigInitResult> => {
-    const { file_id, preview, company_id, user } = request;
+    const { file_id, company_id, user } = request;
 
     const file = await fileService.get({
       file_id,
@@ -25,11 +25,12 @@ class EditorService implements IEditorService {
       language: user.preferences.locale || 'en',
       mode: fileMode,
       onlyoffice_server: ONLY_OFFICE_SERVER,
-      preview: preview ? 'true' : 'false',
+      preview: user.id !== file.user_id,
       user_id: user.id,
       user_image: user.thumbnail || user.picture || '',
       username: user.username,
       company_id,
+      editable: user.id === file.user_id,
     };
   };
 

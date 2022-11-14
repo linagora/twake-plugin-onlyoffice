@@ -30,8 +30,8 @@
         token: "<%= it.file_id %>",
         permissions: {
           download: true,
-          edit: !<%= it.preview %>,
-          review: !<%= it.preview %>,
+          edit: <%= it.editable %>,
+          preview: <%= it.preview %>,
         }
       }
 
