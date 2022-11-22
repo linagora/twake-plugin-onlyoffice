@@ -1,4 +1,5 @@
 import { config } from 'dotenv';
 
 config({ path: `.env.${process.env.NODE_ENV || 'development'}.local` });
-export const { NODE_ENV, PORT, SECRET_KEY, TWAKE_ENDPOINT, ONLY_OFFICE_SERVER, APP_ID, APP_SECRET } = process.env;
+export const { NODE_ENV, SERVER_PORT, SECRET_KEY, CREDENTIALS_ENDPOINT, ONLY_OFFICE_SERVER, CREDENTIAL_ID, CREDENTIALS_SECRET, SERVER_PREFIX } =
+  process.env;
