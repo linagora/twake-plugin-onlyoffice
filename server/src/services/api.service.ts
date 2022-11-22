@@ -5,7 +5,7 @@ import {
   IApiServiceApplicationTokenResponse,
 } from '@/interfaces/api.interface';
 import axios, { Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { TWAKE_ENDPOINT, APP_ID, APP_SECRET } from '@config';
+import { CREDENTIALS_ENDPOINT, CREDENTIAL_ID, CREDENTIALS_SECRET } from '@config';
 import loggerService from './logger.service';
 class ApiService implements IApiService {
   private axios: Axios;
@@ -62,14 +62,14 @@ class ApiService implements IApiService {
   private init = async (): Promise<string> => {
     try {
       const response = await axios.post<IApiServiceApplicationTokenRequestParams, { data: IApiServiceApplicationTokenResponse }>(
-        `${TWAKE_ENDPOINT}api/console/v1/login`,
+        `${CREDENTIALS_ENDPOINT}api/console/v1/login`,
         {
-          id: APP_ID,
-          secret: APP_SECRET,
+          id: CREDENTIAL_ID,
+          secret: CREDENTIALS_SECRET,
         },
         {
           headers: {
-            Authorization: `Basic ${Buffer.from(`${APP_ID}:${APP_SECRET}`).toString('base64')}`,
+            Authorization: `Basic ${Buffer.from(`${CREDENTIAL_ID}:${CREDENTIALS_SECRET}`).toString('base64')}`,
           },
         },
       );
@@ -81,7 +81,7 @@ class ApiService implements IApiService {
       } = response.data;
 
       this.axios = axios.create({
-        baseURL: TWAKE_ENDPOINT,
+        baseURL: CREDENTIALS_ENDPOINT,
         headers: {
           Authorization: `Bearer ${value}`,
         },

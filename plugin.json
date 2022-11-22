@@ -1,12 +1,22 @@
 {
-  "twake": {
-    "version": 1,
-    "files": {
-      "editor": {
-        "preview_url": "http://localhost:5000/",
-        "edition_url": "http://localhost:5000/",
-        "extensions": ["docx", "doc", "ppt", "odt", "odx", "pptx"]
-      }
+  "identity": {
+    "name": "OnlyOffice",
+    "code": "onlyoffice",
+    "icon": "/assets/logo.png",
+    "description": "OnlyOffice connector",
+    "compatibility": ["twake"]
+  },
+  "access": {
+    "write": ["files"],
+    "read": ["files"]
+  },
+  "api": {
+    "hooks_url": "/"
+  },
+  "display": {
+    "twake": {
+      "version": 1,
+      "configuration": ["global"]
     }
   }
 }
