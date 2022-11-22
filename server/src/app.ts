@@ -35,6 +35,8 @@ class App {
     routes.forEach(route => {
       this.app.use(SERVER_PREFIX, route.router);
     });
+
+    this.app.use('/assets', express.static(path.join(__dirname, '../assets')));
   };
 
   private initMiddlewares = () => {
