@@ -5,7 +5,7 @@ import {
   IApiServiceApplicationTokenResponse,
 } from '@/interfaces/api.interface';
 import axios, { Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { CREDENTIALS_ENDPOINT, CREDENTIAL_ID, CREDENTIALS_SECRET } from '@config';
+import { CREDENTIALS_ENDPOINT, CREDENTIALS_ID, CREDENTIALS_SECRET } from '@config';
 import loggerService from './logger.service';
 class ApiService implements IApiService {
   private axios: Axios;
@@ -64,12 +64,12 @@ class ApiService implements IApiService {
       const response = await axios.post<IApiServiceApplicationTokenRequestParams, { data: IApiServiceApplicationTokenResponse }>(
         `${CREDENTIALS_ENDPOINT.replace(/\/$/, "")}/api/console/v1/login`,
         {
-          id: CREDENTIAL_ID,
+          id: CREDENTIALS_ID,
           secret: CREDENTIALS_SECRET,
         },
         {
           headers: {
-            Authorization: `Basic ${Buffer.from(`${CREDENTIAL_ID}:${CREDENTIALS_SECRET}`).toString('base64')}`,
+            Authorization: `Basic ${Buffer.from(`${CREDENTIALS_ID}:${CREDENTIALS_SECRET}`).toString('base64')}`,
           },
         },
       );

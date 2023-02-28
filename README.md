@@ -13,7 +13,7 @@ sudo docker run \
   -e SERVER_PREFIX='/plugins/onlyoffice/'
   -e CREDENTIALS_ENDPOINT='https://canary.twake.app/' \
   -e ONLY_OFFICE_SERVER='https://office.twake.app/
-  -e CREDENTIAL_ID='test' \
+  -e CREDENTIALS_ID='test' \
   -e CREDENTIALS_SECRET='secret' \
   onlyoffice-connector
 ```
