@@ -1,6 +1,6 @@
 import editorService from '@/services/editor.service';
 import { NextFunction, Request, Response } from 'express';
-import { SERVER_PORT, SERVER_PREFIX } from '@config';
+import { SERVER_ORIGIN, SERVER_PREFIX } from '@config';
 
 interface RequestQuery {
   mode: string;
