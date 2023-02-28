@@ -62,7 +62,7 @@ class ApiService implements IApiService {
   private init = async (): Promise<string> => {
     try {
       const response = await axios.post<IApiServiceApplicationTokenRequestParams, { data: IApiServiceApplicationTokenResponse }>(
-        `${CREDENTIALS_ENDPOINT}api/console/v1/login`,
+        `${CREDENTIALS_ENDPOINT.replace(/\/$/, "")}/api/console/v1/login`,
         {
           id: CREDENTIAL_ID,
           secret: CREDENTIALS_SECRET,

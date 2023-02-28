@@ -17,39 +17,41 @@
     "twake": {
       "version": 1,
       "files": {
-        "preview_url": "https://plugins.twake.app/plugins/onlyoffice/?preview=1",
-        "edition_url": "https://plugins.twake.app/plugins/onlyoffice/",
-        "empty_files": [
-            {
-                "url": "https://plugins.twake.app/plugins/onlyoffice/assets/empty.docx",
-                "filename": "Untitled.docx",
-                "name": "ONLYOFFICE Word Document"
-            },
-            {
-                "url": "https://plugins.twake.app/plugins/onlyoffice/assets/empty.xlsx",
-                "filename": "Untitled.xlsx",
-                "name": "ONLYOFFICE Excel Document"
-            },
-            {
-                "url": "https://plugins.twake.app/plugins/onlyoffice/assets/empty.pptx",
-                "filename": "Untitled.pptx",
-                "name": "ONLYOFFICE PowerPoint Document"
-            }
-        ],
-        "extensions": [
-            "xlsx",
-            "pptx",
-            "docx",
-            "xls",
-            "ppt",
-            "doc",
-            "odt",
-            "ods",
-            "odp",
-            "txt",
-            "html",
-            "csv"
-        ]
+        "editor": {
+          "preview_url": "https://plugins.twake.app/plugins/onlyoffice/?preview=1",
+          "edition_url": "https://plugins.twake.app/plugins/onlyoffice/",
+          "empty_files": [
+              {
+                  "url": "https://plugins.twake.app/plugins/onlyoffice/assets/empty.docx",
+                  "filename": "Untitled.docx",
+                  "name": "ONLYOFFICE Word Document"
+              },
+              {
+                  "url": "https://plugins.twake.app/plugins/onlyoffice/assets/empty.xlsx",
+                  "filename": "Untitled.xlsx",
+                  "name": "ONLYOFFICE Excel Document"
+              },
+              {
+                  "url": "https://plugins.twake.app/plugins/onlyoffice/assets/empty.pptx",
+                  "filename": "Untitled.pptx",
+                  "name": "ONLYOFFICE PowerPoint Document"
+              }
+          ],
+          "extensions": [
+              "xlsx",
+              "pptx",
+              "docx",
+              "xls",
+              "ppt",
+              "doc",
+              "odt",
+              "ods",
+              "odp",
+              "txt",
+              "html",
+              "csv"
+          ]
+        }
       }
     }
   }
