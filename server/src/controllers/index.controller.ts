@@ -26,7 +26,7 @@ class IndexController {
 
       res.render('index', {
         ...initResponse,
-        server: (SERVER_ORIGIN.replace(/\/+$/, "") + "/" + SERVER_PREFIX.replace(/\/+$/, "")) || `${req.protocol}://${req.get('host')}/`,
+        server: (SERVER_ORIGIN.replace(/\/+$/, "") + "/" + SERVER_PREFIX.replace(/(\/+$|^\/+)/, "")) || `${req.protocol}://${req.get('host')}/`,
         token,
       });
     } catch (error) {
