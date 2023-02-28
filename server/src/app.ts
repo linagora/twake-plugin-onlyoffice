@@ -5,7 +5,7 @@ import cors from 'cors';
 import { renderFile } from 'eta';
 import path from 'path';
 import errorMiddleware from './middlewares/error.middleware';
-import { PORT } from '@config';
+import { SERVER_PORT, SERVER_PREFIX } from '@config';
 import loggerService from './services/logger.service';
 
 class App {
@@ -24,8 +24,8 @@ class App {
   }
 
   public listen = () => {
-    this.app.listen(PORT, () => {
-      loggerService.info(`🚀 App listening on port ${PORT}`);
+    this.app.listen(SERVER_PORT, () => {
+      loggerService.info(`🚀 App listening on port ${SERVER_PORT}`);
     });
   };
 
@@ -33,8 +33,10 @@ class App {
 
   private initRoutes = (routes: Routes[]) => {
     routes.forEach(route => {
-      this.app.use('/', route.router);
+      this.app.use(SERVER_PREFIX, route.router);
     });
+
+    this.app.use('/assets', express.static(path.join(__dirname, '../assets')));
   };
 
   private initMiddlewares = () => {
