@@ -92,6 +92,7 @@ class ApiService implements IApiService {
       return value;
     } catch (error) {
       loggerService.error('failed to get application token', error.message);
+      loggerService.info("Using token ", CREDENTIALS_ID, CREDENTIALS_SECRET);
       throw Error(error);
     }
   };
