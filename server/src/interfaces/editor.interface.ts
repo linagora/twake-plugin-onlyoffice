@@ -5,6 +5,7 @@ export type EditorInitRequestParams = {
   company_id: string;
   token: string;
   user: UserType;
+  preview: string;
 };
 
 export type EditConfigInitResult = {
