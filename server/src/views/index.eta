@@ -18,7 +18,7 @@
         userimage: "<%= it.user_image %>"
       };
       window.mode = "<%= it.mode %>"
-      window.baseURL = `<%= it.server %>${window.mode}/`;
+      window.baseURL = `<%= it.server %>/${window.mode}/`;
 
       $('#onlyoffice_container').html("<div id='onlyoffice_container_instance'></div>");
 
