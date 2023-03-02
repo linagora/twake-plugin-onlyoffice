@@ -56,7 +56,10 @@ class FileService implements IFileService {
       const form = new FormData();
 
       const nameSplit = (originalFile.metadata.name || '').split('.');
-      const filename = nameSplit[0] + (!create_new ? '' : `-${Date.now()}`) + nameSplit.slice(1).join('.');
+      const filename =
+        nameSplit[0] +
+        (!create_new ? '' : `-${new Date().toISOString().split('.')[0].split(':').slice(0, 2).join('').replace(/-/gm, '').split('T').join('-')}.`) +
+        nameSplit.slice(1).join('.');
       form.append('file', newFile, {
         filename,
       });
