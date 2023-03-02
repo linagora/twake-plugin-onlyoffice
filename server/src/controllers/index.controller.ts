@@ -53,7 +53,9 @@ class IndexController {
 
       //Check whether the user has access to the file and put information to the office_token
       const hasAccess =
-        (!driveFile && file.user_id === user.id) || ['manage', 'write'].includes(driveFile.access) || (driveFile.access === 'read' && preview);
+        (!driveFile && (file.user_id === user.id || preview)) ||
+        ['manage', 'write'].includes(driveFile?.access) ||
+        (driveFile?.access === 'read' && preview);
 
       if (!hasAccess) {
         throw new Error('You do not have access to this file');
