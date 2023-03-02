@@ -34,7 +34,7 @@ class FileService implements IFileService {
     }
   };
 
-  public save = async (params: FileRequestParams): Promise<FileType> => {
+  public save = async (params: FileRequestParams): Promise<{ resource: FileType }> => {
     try {
       const { company_id, file_id, url, user_id, create_new } = params;
 
@@ -66,7 +66,7 @@ class FileService implements IFileService {
 
       loggerService.info('Saving file version: ', filename);
 
-      return await apiService.post<any, FileType>({
+      return await apiService.post<any, { resource: FileType }>({
         url: create_new
           ? `/internal/services/files/v1/companies/${company_id}/files`
           : `/internal/services/files/v1/companies/${company_id}/files/${file_id}`,

@@ -3,7 +3,14 @@ import { UserType } from '@/interfaces/user.interface';
 import { ONLY_OFFICE_SERVER } from '@config';
 
 class EditorService implements IEditorService {
-  public init = async (company_id: string, file_name: string, file_id: string, user: UserType, preview: boolean): Promise<EditConfigInitResult> => {
+  public init = async (
+    company_id: string,
+    file_name: string,
+    file_id: string,
+    user: UserType,
+    preview: boolean,
+    key: string,
+  ): Promise<EditConfigInitResult> => {
     const { color, mode: fileMode } = this.getFileMode(file_name);
 
     return {
@@ -20,6 +27,7 @@ class EditorService implements IEditorService {
       company_id,
       preview,
       editable: !preview,
+      key,
     };
   };
 

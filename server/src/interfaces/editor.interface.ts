@@ -22,10 +22,11 @@ export type EditConfigInitResult = {
   file_type: string;
   editable: boolean;
   preview: boolean;
+  key: string;
 };
 
 export interface IEditorService {
-  init: (company_id: string, file_name: string, file_id: string, user: UserType, preview: boolean) => Promise<EditConfigInitResult>;
+  init: (company_id: string, file_name: string, file_id: string, user: UserType, preview: boolean, key: string) => Promise<EditConfigInitResult>;
 }
 
 export type ModeParametersType = {

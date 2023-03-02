@@ -85,13 +85,11 @@ class OnlyOfficeController {
               create_new: true,
             });
 
-            console.log(newVersionFile);
-
             // If the last version is more than 3h old, we create a new version
             await driveService.createVersion({
               company_id,
               drive_file_id,
-              file_id: newVersionFile.id,
+              file_id: newVersionFile?.resource?.id,
             });
 
             res.send({

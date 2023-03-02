@@ -95,13 +95,13 @@ class IndexController {
       const { user } = req;
 
       const officeTokenPayload = jwt.verify(office_token, CREDENTIALS_SECRET) as OfficeToken;
-      const { preview, user_id, company_id, file_name, file_id } = officeTokenPayload;
+      const { preview, user_id, company_id, file_name, file_id, drive_file_id } = officeTokenPayload;
 
       if (user_id !== user.id) {
         throw new Error('You do not have access to this link');
       }
 
-      const initResponse = await editorService.init(company_id, file_name, file_id, user, preview);
+      const initResponse = await editorService.init(company_id, file_name, file_id, user, preview, drive_file_id || file_id);
 
       const inPageToken = jwt.sign(
         {
