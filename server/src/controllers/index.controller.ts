@@ -25,7 +25,7 @@ interface RequestEditorQuery {
 class IndexController {
   public index = async (req: Request<{}, {}, {}, RequestQuery>, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { file_id, drive_file_id, company_id, preview } = req.query;
+      const { file_id, drive_file_id, company_id, preview, token } = req.query;
       const { user } = req;
 
       let driveFile: DriveFileType;
@@ -34,6 +34,7 @@ class IndexController {
         driveFile = await driveService.get({
           drive_file_id,
           company_id,
+          user_token: token,
         });
 
         if (!driveFile) {

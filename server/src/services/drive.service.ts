@@ -3,11 +3,12 @@ import apiService from './api.service';
 import loggerService from './logger.service';
 
 class DriveService implements IDriveService {
-  public get = async (params: { company_id: string; drive_file_id: string }): Promise<DriveFileType> => {
+  public get = async (params: { company_id: string; drive_file_id: string; user_token?: string }): Promise<DriveFileType> => {
     try {
       const { company_id, drive_file_id } = params;
       const resource = await apiService.get<DriveFileType>({
         url: `/internal/services/documents/v1/companies/${company_id}/item/${drive_file_id}`,
+        token: params.user_token,
       });
 
       return resource;
