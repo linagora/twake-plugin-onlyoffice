@@ -74,9 +74,8 @@ class OnlyOfficeController {
             drive_file_id,
           });
 
-          const createNewVersion = driveFile && driveFile.item.last_version_cache.date_added < Date.now() - 1000 * 60 * 60 * 3;
+          const createNewVersion = !!driveFile; //Always create a new version because needed by OnlyOffice // driveFile.item.last_version_cache.date_added < Date.now() - 1000 * 60 * 60 * 3;
 
-          //After 3h we'll save a new version
           if (createNewVersion) {
             const newVersionFile = await fileService.save({
               company_id,
@@ -85,7 +84,6 @@ class OnlyOfficeController {
               create_new: true,
             });
 
-            // If the last version is more than 3h old, we create a new version
             await driveService.createVersion({
               company_id,
               drive_file_id,
