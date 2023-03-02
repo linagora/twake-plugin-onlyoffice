@@ -14,6 +14,7 @@ export type FileRequestParams = {
   company_id: string;
   url?: string;
   user_id?: string;
+  create_new?: boolean;
 };
 
 export interface IFileService {

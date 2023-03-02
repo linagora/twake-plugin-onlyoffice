@@ -34,9 +34,9 @@ class FileService implements IFileService {
     }
   };
 
-  public save = async (params: FileRequestParams): Promise<void> => {
+  public save = async (params: FileRequestParams): Promise<FileType> => {
     try {
-      const { company_id, file_id, url, user_id } = params;
+      const { company_id, file_id, url, user_id, create_new } = params;
 
       if (!url) {
         throw Error('no url found');
@@ -63,8 +63,10 @@ class FileService implements IFileService {
         filename: originalFile.metadata.name,
       });
 
-      await apiService.post({
-        url: `/internal/services/files/v1/companies/${company_id}/files/${file_id}`,
+      return await apiService.post<any, FileType>({
+        url: create_new
+          ? `/internal/services/files/v1/companies/${company_id}/files/`
+          : `/internal/services/files/v1/companies/${company_id}/files/${file_id}`,
         payload: form,
         headers: form.getHeaders(),
       });
