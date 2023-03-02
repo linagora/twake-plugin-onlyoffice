@@ -18,7 +18,8 @@ interface SaveRequestBody {
 class OnlyOfficeController {
   public read = async (req: Request<{}, {}, {}, RequestQuery>, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { file_id, company_id } = req.query;
+      const { file_id, company_id, token } = req.query;
+      //TODO check token is an in_page_token and allow read
 
       const file = await fileService.download({
         company_id,
@@ -34,7 +35,9 @@ class OnlyOfficeController {
   public save = async (req: Request<{}, {}, SaveRequestBody, RequestQuery>, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { url } = req.body;
-      const { company_id, file_id } = req.query;
+      const { company_id, file_id, token } = req.query;
+      //TODO check token is an in_page_token and allow save
+      //TODO if token indicate a drive_file_id then check if we want to create a new version or not
 
       if (url) {
         await fileService.save({

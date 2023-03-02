@@ -12,10 +12,14 @@ class ApiService implements IApiService {
   private initialized: Promise<string>;
 
   constructor() {
-    this.initialized = this.init();
+    this.initialized = this.refreshToken();
     this.initialized.catch(error => {
       loggerService.error('failed to init API', error);
     });
+
+    setInterval(() => {
+      this.initialized = this.refreshToken();
+    }, 1000 * 60 * 10); //Every 10 minutes
   }
 
   public get = async <T>(params: IApiServiceRequestParams<T>): Promise<T> => {
@@ -59,10 +63,10 @@ class ApiService implements IApiService {
 
   private handleResponse = <T>({ data }: AxiosResponse): T => data;
 
-  private init = async (): Promise<string> => {
+  private refreshToken = async (): Promise<string> => {
     try {
       const response = await axios.post<IApiServiceApplicationTokenRequestParams, { data: IApiServiceApplicationTokenResponse }>(
-        `${CREDENTIALS_ENDPOINT.replace(/\/$/, "")}/api/console/v1/login`,
+        `${CREDENTIALS_ENDPOINT.replace(/\/$/, '')}/api/console/v1/login`,
         {
           id: CREDENTIALS_ID,
           secret: CREDENTIALS_SECRET,
@@ -92,8 +96,8 @@ class ApiService implements IApiService {
       return value;
     } catch (error) {
       loggerService.error('failed to get application token', error.message);
-      loggerService.info("Using token ", CREDENTIALS_ID, CREDENTIALS_SECRET);
-      loggerService.info(`POST ${CREDENTIALS_ENDPOINT.replace(/\/$/, "")}/api/console/v1/login`);
+      loggerService.info('Using token ', CREDENTIALS_ID, CREDENTIALS_SECRET);
+      loggerService.info(`POST ${CREDENTIALS_ENDPOINT.replace(/\/$/, '')}/api/console/v1/login`);
       loggerService.info(`Basic ${Buffer.from(`${CREDENTIALS_ID}:${CREDENTIALS_SECRET}`).toString('base64')}`);
       throw Error(error);
     }
