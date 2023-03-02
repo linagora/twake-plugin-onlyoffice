@@ -21,6 +21,7 @@ export default async (req: Request<{}, {}, {}, RequestQuery>, res: Response, nex
       if (userJwt.id) {
         req.user = userJwt;
         next();
+        return;
       }
     } catch (error) {
       loggerService.error('invalid token', error);
@@ -40,9 +41,22 @@ export default async (req: Request<{}, {}, {}, RequestQuery>, res: Response, nex
 
   res.cookie(
     'token',
-    jwt.sign(user, CREDENTIALS_SECRET, {
-      expiresIn: 60 * 60 * 24 * 30,
-    }),
+    jwt.sign(
+      {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        thumbnail: user.thumbnail,
+        picture: user.picture,
+        preferences: {
+          locale: user?.preferences?.locale,
+        },
+      },
+      CREDENTIALS_SECRET,
+      {
+        expiresIn: 60 * 60 * 24 * 30,
+      },
+    ),
     { maxAge: 60 * 60 * 24 * 30 },
   );
 

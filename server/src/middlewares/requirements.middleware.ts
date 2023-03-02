@@ -6,9 +6,9 @@ interface RequestQuery {
 }
 
 export default (req: Request<{}, {}, {}, RequestQuery>, res: Response, next: NextFunction) => {
-  const { company_id, token } = req.query;
+  const { company_id } = req.query;
 
-  if (!company_id || !token) {
+  if (!company_id) {
     return res.status(400).json({ message: 'invalid request' });
   }
 
