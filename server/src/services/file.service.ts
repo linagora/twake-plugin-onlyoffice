@@ -55,13 +55,17 @@ class FileService implements IFileService {
 
       const form = new FormData();
 
+      const nameSplit = (originalFile.metadata.name || '').split('.');
+      const filename = nameSplit[0] + (!create_new ? '' : `-${Date.now()}`) + nameSplit.slice(1).join('.');
       form.append('file', newFile, {
-        filename: originalFile.metadata.name + (!create_new ? '' : `-${Date.now()}`),
+        filename,
       });
+
+      loggerService.info('Saving file version: ', filename);
 
       return await apiService.post<any, FileType>({
         url: create_new
-          ? `/internal/services/files/v1/companies/${company_id}/files/`
+          ? `/internal/services/files/v1/companies/${company_id}/files`
           : `/internal/services/files/v1/companies/${company_id}/files/${file_id}`,
         payload: form,
         headers: form.getHeaders(),
