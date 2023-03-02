@@ -25,7 +25,7 @@ export type EditConfigInitResult = {
 };
 
 export interface IEditorService {
-  init: (req: EditorInitRequestParams) => Promise<EditConfigInitResult>;
+  init: (company_id: string, file_name: string, file_id: string, user: UserType, preview: boolean) => Promise<EditConfigInitResult>;
 }
 
 export type ModeParametersType = {

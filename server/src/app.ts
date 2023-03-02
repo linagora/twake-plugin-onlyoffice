@@ -7,6 +7,7 @@ import path from 'path';
 import errorMiddleware from './middlewares/error.middleware';
 import { SERVER_PORT, SERVER_PREFIX } from '@config';
 import loggerService from './services/logger.service';
+import cookieParser from 'cookie-parser';
 
 class App {
   public app: express.Application;
@@ -36,15 +37,20 @@ class App {
       this.app.use(SERVER_PREFIX, route.router);
     });
 
-    this.app.use(SERVER_PREFIX + '/assets', (req, res, next) => {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "X-Requested-With");
-      next();
-     }, express.static(path.join(__dirname, '../assets')));
+    this.app.use(
+      SERVER_PREFIX + '/assets',
+      (req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+        next();
+      },
+      express.static(path.join(__dirname, '../assets')),
+    );
   };
 
   private initMiddlewares = () => {
     this.app.use(cors());
+    this.app.use(cookieParser());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
   };

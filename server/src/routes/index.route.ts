@@ -16,6 +16,7 @@ class IndexRoute implements Routes {
 
   private initRoutes = () => {
     this.router.get(this.path, requirementsMiddleware, authMiddleware, this.indexController.index);
+    this.router.get(this.path + 'editor', requirementsMiddleware, authMiddleware, this.indexController.editor);
   };
 }
 

@@ -1,36 +1,25 @@
-import { EditConfigInitResult, EditorInitRequestParams, IEditorService, ModeParametersType } from '@/interfaces/editor.interface';
+import { EditConfigInitResult, IEditorService, ModeParametersType } from '@/interfaces/editor.interface';
+import { UserType } from '@/interfaces/user.interface';
 import { ONLY_OFFICE_SERVER } from '@config';
-import fileService from './file.service';
 
 class EditorService implements IEditorService {
-  public init = async (request: EditorInitRequestParams): Promise<EditConfigInitResult> => {
-    const { file_id, company_id, user, preview } = request;
-
-    const file = await fileService.get({
-      file_id,
-      company_id,
-    });
-
-    if (!file) {
-      throw Error("can't find file");
-    }
-
-    const { color, mode: fileMode } = this.getFileMode(file.metadata.name);
+  public init = async (company_id: string, file_name: string, file_id: string, user: UserType, preview: boolean): Promise<EditConfigInitResult> => {
+    const { color, mode: fileMode } = this.getFileMode(file_name);
 
     return {
       color,
-      file_id,
-      file_type: file.metadata.name.split('.').pop(),
-      filename: file.metadata.name,
+      file_id: file_id,
+      file_type: file_name.split('.').pop(),
+      filename: file_name,
       language: user.preferences.locale || 'en',
       mode: fileMode,
       onlyoffice_server: ONLY_OFFICE_SERVER,
-      preview: user.id !== file.user_id,
       user_id: user.id,
       user_image: user.thumbnail || user.picture || '',
       username: user.username,
       company_id,
-      editable: user.id === file.user_id && !preview,
+      preview,
+      editable: !preview,
     };
   };
 
