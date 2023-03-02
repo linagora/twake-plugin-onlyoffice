@@ -6,16 +6,17 @@ class EditorService implements IEditorService {
   public init = async (
     company_id: string,
     file_name: string,
-    file_id: string,
+    file_version_id: string,
     user: UserType,
     preview: boolean,
-    key: string,
+    file_id: string,
   ): Promise<EditConfigInitResult> => {
     const { color, mode: fileMode } = this.getFileMode(file_name);
 
     return {
       color,
-      file_id: file_id,
+      file_id,
+      file_version_id,
       file_type: file_name.split('.').pop(),
       filename: file_name,
       language: user.preferences.locale || 'en',
@@ -27,7 +28,6 @@ class EditorService implements IEditorService {
       company_id,
       preview,
       editable: !preview,
-      key,
     };
   };
 

@@ -18,15 +18,22 @@ export type EditConfigInitResult = {
   color: string;
   company_id: string;
   file_id: string;
+  file_version_id: string;
   filename: string;
   file_type: string;
   editable: boolean;
   preview: boolean;
-  key: string;
 };
 
 export interface IEditorService {
-  init: (company_id: string, file_name: string, file_id: string, user: UserType, preview: boolean, key: string) => Promise<EditConfigInitResult>;
+  init: (
+    company_id: string,
+    file_name: string,
+    file_version_id: string,
+    user: UserType,
+    preview: boolean,
+    file_id: string,
+  ) => Promise<EditConfigInitResult>;
 }
 
 export type ModeParametersType = {
