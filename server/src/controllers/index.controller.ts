@@ -67,7 +67,7 @@ class IndexController {
           user_id: user.id, //To verify that link is opened by the same user
           company_id,
           drive_file_id,
-          file_id,
+          file_id: file.id,
           file_name: file.filename || file?.metadata?.name || '',
           preview: !!preview,
         } as OfficeToken,
