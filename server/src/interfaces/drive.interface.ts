@@ -4,6 +4,9 @@ export type DriveFileType = {
     last_version_cache: {
       id: string;
       date_added: number;
+      file_metadata: {
+        external_id: string;
+      };
     };
   };
 };

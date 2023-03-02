@@ -43,7 +43,7 @@ class IndexController {
 
       //Get the file itself
       const file = await fileService.get({
-        file_id: driveFile?.item?.last_version_cache?.id || file_id,
+        file_id: driveFile?.item?.last_version_cache?.file_metadata?.external_id || file_id,
         company_id,
       });
 
