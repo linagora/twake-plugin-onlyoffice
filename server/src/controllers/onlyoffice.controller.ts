@@ -20,6 +20,7 @@ class OnlyOfficeController {
     try {
       const { file_id, company_id, token } = req.query;
       //TODO check token is an in_page_token and allow read
+      console.log(token);
 
       const file = await fileService.download({
         company_id,
@@ -38,6 +39,7 @@ class OnlyOfficeController {
       const { company_id, file_id, token } = req.query;
       //TODO check token is an in_page_token and allow save
       //TODO if token indicate a drive_file_id then check if we want to create a new version or not
+      console.log(token);
 
       if (url) {
         await fileService.save({

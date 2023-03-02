@@ -1,6 +1,5 @@
 import OnlyOfficeController from '@/controllers/onlyoffice.controller';
 import { Routes } from '@/interfaces/routes.interface';
-import authMiddleware from '@/middlewares/auth.middleware';
 import requirementsMiddleware from '@/middlewares/requirements.middleware';
 import { Router } from 'express';
 

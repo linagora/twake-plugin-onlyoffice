@@ -1,4 +1,3 @@
-import { FileType } from './file.interface';
 import { UserType } from './user.interface';
 
 export type EditorInitRequestParams = {

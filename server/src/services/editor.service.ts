@@ -1,8 +1,6 @@
-import { EditConfigInitResult, EditorInitRequestParams, IEditorService, ModeParametersType } from '@/interfaces/editor.interface';
-import { FileType } from '@/interfaces/file.interface';
+import { EditConfigInitResult, IEditorService, ModeParametersType } from '@/interfaces/editor.interface';
 import { UserType } from '@/interfaces/user.interface';
 import { ONLY_OFFICE_SERVER } from '@config';
-import fileService from './file.service';
 
 class EditorService implements IEditorService {
   public init = async (company_id: string, file_name: string, file_id: string, user: UserType, preview: boolean): Promise<EditConfigInitResult> => {
