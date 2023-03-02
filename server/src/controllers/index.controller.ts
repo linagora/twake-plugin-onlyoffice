@@ -65,7 +65,7 @@ class IndexController {
           company_id,
           drive_file_id,
           file_id,
-          file_name: file.name,
+          file_name: file.filename || file?.metadata?.name || '',
           preview: !!preview,
         } as OfficeToken,
         CREDENTIALS_SECRET,

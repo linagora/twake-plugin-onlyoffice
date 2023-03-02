@@ -1,6 +1,6 @@
 export type FileType = {
   id: string;
-  name: string;
+  filename: string;
   company_id: string;
   user_id: string;
   metadata: {
