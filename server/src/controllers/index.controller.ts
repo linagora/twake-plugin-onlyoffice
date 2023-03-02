@@ -60,14 +60,14 @@ class IndexController {
       }
 
       const officeToken = jwt.sign(
-        JSON.stringify({
+        {
           user_id: user.id, //To verify that link is opened by the same user
           company_id,
           drive_file_id,
           file_id,
           file_name: file.name,
           preview: !!preview,
-        } as OfficeToken),
+        } as OfficeToken,
         CREDENTIALS_SECRET,
         {
           expiresIn: 60 * 60 * 24 * 30,
@@ -90,8 +90,7 @@ class IndexController {
       const { office_token } = req.query;
       const { user } = req;
 
-      const officeToken = jwt.verify(office_token, CREDENTIALS_SECRET, { complete: true });
-      const officeTokenPayload: OfficeToken = JSON.parse(officeToken.payload as string);
+      const officeTokenPayload = jwt.verify(office_token, CREDENTIALS_SECRET) as OfficeToken;
       const { preview, user_id, company_id, file_name, file_id } = officeTokenPayload;
 
       if (user_id !== user.id) {
@@ -101,10 +100,10 @@ class IndexController {
       const initResponse = await editorService.init(company_id, file_name, file_id, user, preview);
 
       const inPageToken = jwt.sign(
-        JSON.stringify({
+        {
           ...officeTokenPayload,
           in_page_token: true,
-        } as OfficeToken),
+        } as OfficeToken,
         CREDENTIALS_SECRET,
         {
           expiresIn: 60 * 60 * 24 * 30,

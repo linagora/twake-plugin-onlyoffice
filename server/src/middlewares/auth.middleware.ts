@@ -17,9 +17,9 @@ export default async (req: Request<{}, {}, {}, RequestQuery>, res: Response, nex
 
   if (!token && req.cookies.token) {
     try {
-      const userJwt = jwt.verify(req.cookies.token, CREDENTIALS_SECRET, { complete: true });
-      if (JSON.parse(userJwt.payload as string).id) {
-        req.user = JSON.parse(userJwt.payload as string);
+      const userJwt = jwt.verify(req.cookies.token, CREDENTIALS_SECRET) as any;
+      if (userJwt.id) {
+        req.user = userJwt;
         next();
       }
     } catch (error) {
@@ -40,7 +40,7 @@ export default async (req: Request<{}, {}, {}, RequestQuery>, res: Response, nex
 
   res.cookie(
     'token',
-    jwt.sign(JSON.stringify(user), CREDENTIALS_SECRET, {
+    jwt.sign(user, CREDENTIALS_SECRET, {
       expiresIn: 60 * 60 * 24 * 30,
     }),
     { maxAge: 60 * 60 * 24 * 30 },

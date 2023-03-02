@@ -24,8 +24,7 @@ class OnlyOfficeController {
     try {
       const { token } = req.query;
 
-      const officeToken = jwt.verify(token, CREDENTIALS_SECRET, { complete: true });
-      const officeTokenPayload: OfficeToken = JSON.parse(officeToken.payload as string);
+      const officeTokenPayload = jwt.verify(token, CREDENTIALS_SECRET) as OfficeToken;
       const { company_id, file_id, in_page_token } = officeTokenPayload;
 
       // check token is an in_page_token
@@ -47,8 +46,7 @@ class OnlyOfficeController {
       const { url } = req.body;
       const { token } = req.query;
 
-      const officeToken = jwt.verify(token, CREDENTIALS_SECRET, { complete: true });
-      const officeTokenPayload: OfficeToken = JSON.parse(officeToken.payload as string);
+      const officeTokenPayload = jwt.verify(token, CREDENTIALS_SECRET) as OfficeToken;
       const { preview, company_id, file_id, user_id, drive_file_id, in_page_token } = officeTokenPayload;
 
       // check token is an in_page_token and allow save
