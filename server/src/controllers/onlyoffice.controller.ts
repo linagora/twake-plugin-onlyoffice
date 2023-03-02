@@ -66,8 +66,6 @@ class OnlyOfficeController {
       if (preview) throw new Error('Invalid token, must not be a preview token for save operation');
 
       if (url) {
-        let fileId = file_id;
-
         // If token indicate a drive_file_id then check if we want to create a new version or not
         if (drive_file_id) {
           //Get the drive file
@@ -87,7 +85,7 @@ class OnlyOfficeController {
               create_new: true,
             });
 
-            fileId = newVersionFile.id;
+            console.log(newVersionFile);
 
             // If the last version is more than 3h old, we create a new version
             await driveService.createVersion({
@@ -106,7 +104,7 @@ class OnlyOfficeController {
 
         await fileService.save({
           company_id,
-          file_id: fileId,
+          file_id,
           url,
           user_id: user_id,
         });
