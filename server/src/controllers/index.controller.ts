@@ -105,9 +105,6 @@ class IndexController {
           in_page_token: true,
         } as OfficeToken,
         CREDENTIALS_SECRET,
-        {
-          expiresIn: 60 * 60 * 24 * 30,
-        },
       );
 
       res.render('index', {
