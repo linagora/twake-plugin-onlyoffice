@@ -6,6 +6,7 @@ import driveService from '@/services/drive.service';
 import { DriveFileType } from '@/interfaces/drive.interface';
 import fileService from '@/services/file.service';
 import { OfficeToken } from '@/interfaces/routes.interface';
+import loggerService from '@/services/logger.service';
 
 interface RequestQuery {
   mode: string;
@@ -116,6 +117,7 @@ class IndexController {
         token: inPageToken,
       });
     } catch (error) {
+      loggerService.error(error);
       next(error);
     }
   };

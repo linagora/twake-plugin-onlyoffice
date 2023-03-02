@@ -48,10 +48,6 @@ class FileService implements IFileService {
         throw Error('original file not found');
       }
 
-      if (originalFile.user_id !== user_id) {
-        throw Error("can't save file, user is not the owner");
-      }
-
       const newFile = await apiService.get<Stream>({
         url,
         responseType: 'stream',
@@ -60,7 +56,7 @@ class FileService implements IFileService {
       const form = new FormData();
 
       form.append('file', newFile, {
-        filename: originalFile.metadata.name,
+        filename: originalFile.metadata.name + (!create_new ? '' : `-${Date.now()}`),
       });
 
       return await apiService.post<any, FileType>({
