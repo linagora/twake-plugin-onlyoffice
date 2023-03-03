@@ -68,8 +68,8 @@ class FileService implements IFileService {
 
       return await apiService.post<any, { resource: FileType }>({
         url: create_new
-          ? `/internal/services/files/v1/companies/${company_id}/files`
-          : `/internal/services/files/v1/companies/${company_id}/files/${file_id}`,
+          ? `/internal/services/files/v1/companies/${company_id}/files?thumbnail_sync=1`
+          : `/internal/services/files/v1/companies/${company_id}/files/${file_id}?thumbnail_sync=1`,
         payload: form,
         headers: form.getHeaders(),
       });
