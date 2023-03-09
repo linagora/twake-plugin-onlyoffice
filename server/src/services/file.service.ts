@@ -36,7 +36,7 @@ class FileService implements IFileService {
 
   public save = async (params: FileRequestParams): Promise<{ resource: FileType }> => {
     try {
-      const { company_id, file_id, url, user_id, create_new } = params;
+      const { company_id, file_id, url, create_new } = params;
 
       if (!url) {
         throw Error('no url found');
@@ -57,7 +57,7 @@ class FileService implements IFileService {
 
       const nameSplit = (originalFile.metadata.name || '').split('.');
       const filename =
-        nameSplit[0] +
+        nameSplit[0].replace(/-[0-9]{8}-[0-9]{4}$/, '') +
         (!create_new ? '.' : `-${new Date().toISOString().split('.')[0].split(':').slice(0, 2).join('').replace(/-/gm, '').split('T').join('-')}.`) +
         nameSplit.slice(1).join('.');
       form.append('file', newFile, {
