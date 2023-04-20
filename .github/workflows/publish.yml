@@ -15,7 +15,7 @@ jobs:
           name: tdrive/tdrive-node
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-          workdir: tdrive
+          workdir: .
           registry: docker-registry.linagora.com
           context: .
           target: production
