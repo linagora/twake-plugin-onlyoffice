@@ -1,0 +1,24 @@
+name: update-saas-backend
+
+# Deploy backend only if push on "main"
+on:
+  push:
+    branches: [main]
+
+jobs:
+  publish-node:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@v5
+        with:
+          name: tdrive/tdrive-node
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          workdir: tdrive
+          registry: docker-registry.linagora.com
+          context: .
+          target: production
+          buildoptions: "-t docker-registry.linagora.com/tdrive/onlyoffice-connector"
+          tags: "latest"
