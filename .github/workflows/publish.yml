@@ -1,6 +1,5 @@
-name: update-saas-backend
+name: publish
 
-# Deploy backend only if push on "main"
 on:
   push:
     branches: [main]
