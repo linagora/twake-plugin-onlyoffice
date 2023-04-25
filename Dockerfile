@@ -6,6 +6,6 @@ COPY server/package*.json ./
 RUN npm install
 
 COPY server/ .
-RUN npm build
+RUN npm run build
 
 CMD [ "npm", "start" ]
