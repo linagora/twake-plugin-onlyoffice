@@ -9,6 +9,7 @@ sudo docker build -t onlyoffice-connector .
 sudo docker run \
   --restart unless-stopped \
   -dp 5000:5000 \
+  -e SERVER_ORIGIN='https://canary.twake.app/' \ #Only if you are using the plugins behing the node reverse proxy
   -e SERVER_PORT=5000 \
   -e SERVER_PREFIX='/plugins/onlyoffice/'
   -e CREDENTIALS_ENDPOINT='https://canary.twake.app/' \
