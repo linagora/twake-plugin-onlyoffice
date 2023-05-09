@@ -38,7 +38,7 @@ class App {
     });
 
     this.app.use(
-      SERVER_PREFIX.replace(/\/$/, "") + '/assets',
+      SERVER_PREFIX.replace(/\/$/, '') + '/assets',
       (req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Headers', 'X-Requested-With');
