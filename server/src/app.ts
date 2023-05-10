@@ -33,6 +33,12 @@ class App {
   public getServer = () => this.app;
 
   private initRoutes = (routes: Routes[]) => {
+
+    this.app.use((req, res, next) => {
+       console.log('Requested: ', req.method, req.originalUrl);
+       next();
+    });
+
     routes.forEach(route => {
       this.app.use(SERVER_PREFIX, route.router);
     });
