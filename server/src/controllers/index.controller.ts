@@ -80,7 +80,7 @@ class IndexController {
 
       res.redirect(
         `/${SERVER_PREFIX.replace(
-          /(\/+$|^\/+)/,
+          /(\/+$|^\/+)/gm,
           '',
         )}/editor?office_token=${officeToken}&file_id=${file_id}&company_id=${company_id}&preview=${preview}`,
       );

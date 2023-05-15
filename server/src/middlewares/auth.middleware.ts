@@ -13,53 +13,58 @@ interface RequestQuery {
 }
 
 export default async (req: Request<{}, {}, {}, RequestQuery>, res: Response, next: NextFunction) => {
-  const token = req.query?.token;
+  try {
+    const token = req.query?.token;
 
-  if (!token && req.cookies.token) {
-    try {
-      const userJwt = jwt.verify(req.cookies.token, CREDENTIALS_SECRET) as any;
-      if (userJwt.id) {
-        req.user = userJwt;
-        next();
-        return;
+    if (!token && req.cookies.token) {
+      try {
+        const userJwt = jwt.verify(req.cookies.token, CREDENTIALS_SECRET) as any;
+        if (userJwt.id) {
+          req.user = userJwt;
+          next();
+          return;
+        }
+      } catch (error) {
+        loggerService.error('invalid token', error);
+        res.clearCookie('token');
       }
-    } catch (error) {
-      loggerService.error('invalid token', error);
-      res.clearCookie('token');
     }
-  }
 
-  if (!token) {
-    return res.status(401);
-  }
+    if (!token) {
+      return res.status(401).send({ message: 'invalid token' });
+    }
 
-  const user = await userService.getCurrentUser(token);
+    const user = await userService.getCurrentUser(token);
 
-  if (!user || !user.id) {
-    return res.status(401).json({ message: 'invalid token' });
-  }
+    if (!user || !user.id) {
+      return res.status(401).json({ message: 'invalid token' });
+    }
 
-  res.cookie(
-    'token',
-    jwt.sign(
-      {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        thumbnail: user.thumbnail,
-        picture: user.picture,
-        preferences: {
-          locale: user?.preferences?.locale,
+    res.cookie(
+      'token',
+      jwt.sign(
+        {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          thumbnail: user.thumbnail,
+          picture: user.picture,
+          preferences: {
+            locale: user?.preferences?.locale,
+          },
         },
-      },
-      CREDENTIALS_SECRET,
-      {
-        expiresIn: 60 * 60 * 24 * 30,
-      },
-    ),
-    { maxAge: 60 * 60 * 24 * 30 },
-  );
+        CREDENTIALS_SECRET,
+        {
+          expiresIn: 60 * 60 * 24 * 30,
+        },
+      ),
+      { maxAge: 60 * 60 * 24 * 30 },
+    );
 
-  req.user = user;
-  next();
+    req.user = user;
+    next();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ message: 'invalid token' });
+  }
 };
