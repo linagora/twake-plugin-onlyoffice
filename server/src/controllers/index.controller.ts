@@ -79,10 +79,10 @@ class IndexController {
       );
 
       res.redirect(
-        `/${SERVER_PREFIX.replace(
+        `${SERVER_ORIGIN ?? ''}/${SERVER_PREFIX.replace(
           /(\/+$|^\/+)/gm,
           '',
-        )}/editor?office_token=${officeToken}&file_id=${file_id}&company_id=${company_id}&preview=${preview}`,
+        )}/editor?office_token=${officeToken}&token=${token}&file_id=${file_id}&company_id=${company_id}&preview=${preview}`,
       );
     } catch (error) {
       next(error);
