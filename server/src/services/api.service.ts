@@ -47,7 +47,7 @@ class ApiService implements IApiService {
     const { url, payload, headers } = params;
 
     await this.initialized;
-
+    loggerService.info('POST', this.axios.baseURL, url, payload);
     return await this.axios.post(url, payload, {
       headers: {
         ...headers,
