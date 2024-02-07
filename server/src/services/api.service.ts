@@ -19,7 +19,8 @@ class ApiService implements IApiService {
 
     setInterval(() => {
       this.initialized = this.refreshToken();
-    }, 1000 * 60 * 10); //Every 10 minutes
+      loggerService.info('Refreshing token');
+    }, 1000 * 60); //Every 10 minutes
   }
 
   public get = async <T>(params: IApiServiceRequestParams<T>): Promise<T> => {
@@ -54,6 +55,7 @@ class ApiService implements IApiService {
         },
       });
     } catch (error) {
+      loggerService.error('Failed to post', error.message);
       this.refreshToken();
     }
   };
