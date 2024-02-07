@@ -40,7 +40,7 @@ class DriveService implements IDriveService {
 
       return resource;
     } catch (error) {
-      loggerService.error('Failed to create version: ', error);
+      loggerService.error('Failed to create version: ', error.message);
       return Promise.reject();
     }
   };
