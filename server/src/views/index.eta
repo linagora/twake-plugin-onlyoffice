@@ -69,11 +69,11 @@
         var commandData = {
           "c": "forcesave",
           "key": "<%= it.file_version_id %>",
+          "title": "<%= it.filename %>",
+          "url": `${window.baseURL}save?file_id=<%= it.file_id %>&company_id=<%= it.company_id %>`
           "userdata": "sample userdata"
         };
-
-        // Send the force save command
-        window.docEditor.sendMessage(commandData);
+        console.log('force save', commandData);
       }
 
       // Set interval to trigger force save every 5 minutes (adjust interval as needed)
