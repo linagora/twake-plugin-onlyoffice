@@ -110,6 +110,7 @@ class ApiService implements IApiService {
 
   public runCommand = async (c: string, key: string): Promise<void> => {
     try {
+      loggerService.info('SENDING COMMAND TO: ', `${ONLY_OFFICE_SERVER}/coauthoring/CommandService.ashx`);
       const response = await this.axios.post(`${ONLY_OFFICE_SERVER}/coauthoring/CommandService.ashx`, {
         c,
         key,
@@ -143,8 +144,7 @@ class ApiService implements IApiService {
           throw new Error('Unknown error occurred.');
       }
     } catch (error) {
-      loggerService.error('Error saving file');
-      throw new Error('Error saving file');
+      loggerService.error('Error executing command: ', c);
     }
   };
 }
