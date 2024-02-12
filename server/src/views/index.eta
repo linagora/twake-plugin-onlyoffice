@@ -63,22 +63,6 @@
           },
         },
       });
-
-      // Function to trigger force save
-      function forceSave() {
-        var commandData = {
-          "c": "forcesave",
-          "key": "<%= it.file_version_id %>",
-          "title": "<%= it.filename %>",
-          "userdata": "sample userdata"
-        };
-        console.log('force save', commandData);
-      }
-
-      // Set interval to trigger force save every 5 minutes (adjust interval as needed)
-      setInterval(function() {
-        forceSave();
-      }, 3000);
     });
   </script>
 </body>

@@ -59,6 +59,7 @@ class OnlyOfficeController {
       const { url } = req.body;
       const { token } = req.query;
       loggerService.info('Save request', { url, token });
+      loggerService.info('Save request full body', JSON.stringify(req.body));
 
       const officeTokenPayload = jwt.verify(token, CREDENTIALS_SECRET) as OfficeToken;
       const { preview, company_id, file_id, user_id, drive_file_id, in_page_token } = officeTokenPayload;
