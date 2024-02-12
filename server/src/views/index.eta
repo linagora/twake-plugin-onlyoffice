@@ -63,6 +63,23 @@
           },
         },
       });
+
+      // Function to trigger force save
+      function forceSave() {
+        var commandData = {
+          "c": "forcesave",
+          "key": "<%= it.file_version_id %>",
+          "userdata": "sample userdata"
+        };
+
+        // Send the force save command
+        window.docEditor.sendMessage(commandData);
+      }
+
+      // Set interval to trigger force save every 5 minutes (adjust interval as needed)
+      setInterval(function() {
+        forceSave();
+      }, 3000);
     });
   </script>
 </body>
