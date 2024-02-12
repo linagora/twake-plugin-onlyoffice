@@ -1,5 +1,6 @@
 import { CREDENTIALS_SECRET } from '@/config';
 import { OfficeToken } from '@/interfaces/routes.interface';
+import apiService from '@/services/api.service';
 import driveService from '@/services/drive.service';
 import fileService from '@/services/file.service';
 import loggerService from '@/services/logger.service';
@@ -56,10 +57,9 @@ class OnlyOfficeController {
 
   public save = async (req: Request<{}, {}, SaveRequestBody, RequestQuery>, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { url } = req.body;
+      const { url, key } = req.body;
       const { token } = req.query;
-      loggerService.info('Save request', { url, token });
-      loggerService.info('Save request full body', JSON.stringify(req.body));
+      loggerService.info('Save request', { key, url, token });
 
       const officeTokenPayload = jwt.verify(token, CREDENTIALS_SECRET) as OfficeToken;
       const { preview, company_id, file_id, user_id, drive_file_id, in_page_token } = officeTokenPayload;
@@ -111,6 +111,9 @@ class OnlyOfficeController {
           url,
           user_id: user_id,
         });
+      } else {
+        loggerService.error('URL not present, force saving file');
+        await apiService.runCommand('forcesave', key);
       }
 
       res.send({

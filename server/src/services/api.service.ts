@@ -5,7 +5,7 @@ import {
   IApiServiceApplicationTokenResponse,
 } from '@/interfaces/api.interface';
 import axios, { Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { CREDENTIALS_ENDPOINT, CREDENTIALS_ID, CREDENTIALS_SECRET } from '@config';
+import { CREDENTIALS_ENDPOINT, CREDENTIALS_ID, CREDENTIALS_SECRET, ONLY_OFFICE_SERVER } from '@config';
 import loggerService from './logger.service';
 class ApiService implements IApiService {
   private axios: Axios;
@@ -105,6 +105,46 @@ class ApiService implements IApiService {
       loggerService.info(`POST ${CREDENTIALS_ENDPOINT.replace(/\/$/, '')}/api/console/v1/login`);
       loggerService.info(`Basic ${Buffer.from(`${CREDENTIALS_ID}:${CREDENTIALS_SECRET}`).toString('base64')}`);
       throw Error(error);
+    }
+  };
+
+  public runCommand = async (c: string, key: string): Promise<void> => {
+    try {
+      const response = await this.axios.post(`${ONLY_OFFICE_SERVER}/coauthoring/CommandService.ashx`, {
+        c,
+        key,
+        userdata: '',
+      });
+      const { data } = response;
+      switch (data.error) {
+        case 0:
+          loggerService.info('File saved successfully');
+          break;
+        case 1:
+          loggerService.error('Document key is missing or no document with such key could be found.');
+          throw new Error('Document key is missing or no document with such key could be found.');
+        case 2:
+          loggerService.error('Callback url not correct.');
+          throw new Error('Callback url not correct.');
+        case 3:
+          loggerService.error('Internal server error.');
+          throw new Error('Internal server error.');
+        case 4:
+          loggerService.error('No changes were applied to the document before the forcesave command was received.');
+          throw new Error('No changes were applied to the document before the forcesave command was received.');
+        case 5:
+          loggerService.error('Command not correct.');
+          throw new Error('Command not correct.');
+        case 6:
+          loggerService.error('Invalid token.');
+          throw new Error('Invalid token.');
+        default:
+          loggerService.error('Unknown error occurred.');
+          throw new Error('Unknown error occurred.');
+      }
+    } catch (error) {
+      loggerService.error('Error saving file');
+      throw new Error('Error saving file');
     }
   };
 }
