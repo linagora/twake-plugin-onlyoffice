@@ -144,7 +144,7 @@ class ApiService implements IApiService {
           throw new Error('Unknown error occurred.');
       }
     } catch (error) {
-      loggerService.error('Error executing command: ', c);
+      loggerService.error(`Error executing command: ${c}, ${error}`);
     }
   };
 }
