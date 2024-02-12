@@ -2,6 +2,7 @@ import { CREDENTIALS_SECRET } from '@/config';
 import { OfficeToken } from '@/interfaces/routes.interface';
 import driveService from '@/services/drive.service';
 import fileService from '@/services/file.service';
+import loggerService from '@/services/logger.service';
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -57,6 +58,7 @@ class OnlyOfficeController {
     try {
       const { url } = req.body;
       const { token } = req.query;
+      loggerService.log('Save request', { url, token });
 
       const officeTokenPayload = jwt.verify(token, CREDENTIALS_SECRET) as OfficeToken;
       const { preview, company_id, file_id, user_id, drive_file_id, in_page_token } = officeTokenPayload;
@@ -66,8 +68,10 @@ class OnlyOfficeController {
       if (preview) throw new Error('Invalid token, must not be a preview token for save operation');
 
       if (url) {
+        loggerService.log('URL present, saving file');
         // If token indicate a drive_file_id then check if we want to create a new version or not
         if (drive_file_id) {
+          loggerService.log('Drive file id present, checking if we need to create a new version');
           //Get the drive file
           const driveFile = await driveService.get({
             company_id,
@@ -89,6 +93,7 @@ class OnlyOfficeController {
               drive_file_id,
               file_id: newVersionFile?.resource?.id,
             });
+            loggerService.log('New version created');
 
             res.send({
               error: 0,
@@ -97,6 +102,7 @@ class OnlyOfficeController {
             return;
           }
         }
+        loggerService.log('Saving file');
 
         await fileService.save({
           company_id,
