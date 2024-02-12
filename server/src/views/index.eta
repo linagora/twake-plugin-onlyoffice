@@ -70,7 +70,6 @@
           "c": "forcesave",
           "key": "<%= it.file_version_id %>",
           "title": "<%= it.filename %>",
-          "url": `${window.baseURL}save?file_id=<%= it.file_id %>&company_id=<%= it.company_id %>`
           "userdata": "sample userdata"
         };
         console.log('force save', commandData);
