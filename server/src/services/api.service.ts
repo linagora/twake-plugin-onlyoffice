@@ -110,8 +110,8 @@ class ApiService implements IApiService {
 
   public runCommand = async (c: string, key: string): Promise<void> => {
     try {
-      loggerService.info('SENDING COMMAND TO: ', `${ONLY_OFFICE_SERVER}/coauthoring/CommandService.ashx`);
-      const response = await this.axios.post(`${ONLY_OFFICE_SERVER}/coauthoring/CommandService.ashx`, {
+      loggerService.info('SENDING COMMAND TO: ', `${ONLY_OFFICE_SERVER}coauthoring/CommandService.ashx`);
+      const response = await this.axios.post(`${ONLY_OFFICE_SERVER}coauthoring/CommandService.ashx`, {
         c,
         key,
         userdata: '',
