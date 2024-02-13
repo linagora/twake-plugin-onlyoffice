@@ -41,18 +41,19 @@
           url: forceSaveUrl,
           type: 'POST',
           contentType: 'application/json',
-          data: {
+          data: JSON.stringify({
             file_id: "<%= it.file_id %>",
             key: "<%= it.file_version_id %>",
-            token: "<%= it.token %>",
-          },
+            token: "<%= it.token %>"
+          }),
           success: function() {
             console.log('force save success');
           },
           error: function() {
             console.log('force save error');
-          },
+          }
         });
+
       }
 
       window.docEditor = new DocsAPI.DocEditor('onlyoffice_container_instance', {
