@@ -34,7 +34,6 @@
           preview: <%= it.preview %>,
         }
       }
-      console.log("DOC IS: ", doc);
 
       window.docEditor = new DocsAPI.DocEditor('onlyoffice_container_instance', {
         scrollSensitivity: window.mode === 'text' ? 100 : 40,
@@ -63,6 +62,26 @@
             },
           },
         },
+      });
+      // force save url
+      const forceSaveUrl = '<%= it.server %>/command/force-save';
+      window.docEditor.events.on('save', function() {
+        console.log('force save');
+        $.ajax({
+          url: forceSaveUrl,
+          type: 'POST',
+          data: {
+            file_id: "<%= it.file_id %>",
+            key: "<%= it.file_version_id %>",
+            token: "<%= it.token %>",
+          },
+          success: function() {
+            console.log('force save success');
+          },
+          error: function() {
+            console.log('force save error');
+          },
+        });
       });
     });
   </script>
