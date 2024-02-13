@@ -36,7 +36,7 @@
       }
       const documentChangeHandler = function (event) {
         console.log('documentChangeHandler', event);
-        const forceSaveUrl = `${window.baseURL}read?file_id=<%= it.file_id %>&company_id=<%= it.company_id %>&token=<%= it.token %>`;
+        const forceSaveUrl = `${window.baseURL}save?file_id=<%= it.file_id %>&company_id=<%= it.company_id %>&token=<%= it.token %>`;
         $.ajax({
           url: forceSaveUrl,
           type: 'POST',
