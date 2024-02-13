@@ -35,10 +35,8 @@
         }
       }
       const documentChangeHandler = function (event) {
-        console.log('documentChangeHandler', event);
-        const forceSaveUrl = `${window.baseURL}save?file_id=<%= it.file_id %>&company_id=<%= it.company_id %>&token=<%= it.token %>`;
         $.ajax({
-          url: forceSaveUrl,
+          url: `${window.baseURL}save?file_id=<%= it.file_id %>&company_id=<%= it.company_id %>&token=<%= it.token %>`,
           type: 'POST',
           contentType: 'application/json',
           data: JSON.stringify({
@@ -47,13 +45,12 @@
             token: "<%= it.token %>"
           }),
           success: function() {
-            console.log('force save success');
+            console.log('save success');
           },
           error: function() {
-            console.log('force save error');
+            console.log('save error');
           }
         });
-
       }
 
       window.docEditor = new DocsAPI.DocEditor('onlyoffice_container_instance', {
