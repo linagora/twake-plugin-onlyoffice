@@ -111,12 +111,12 @@ class ApiService implements IApiService {
   public runCommand = async (c: string, key: string): Promise<void> => {
     try {
       loggerService.info('SENDING COMMAND TO: ', `${ONLY_OFFICE_SERVER}coauthoring/CommandService.ashx`);
-      const response = await this.axios.post(`${ONLY_OFFICE_SERVER}coauthoring/CommandService.ashx`, {
+      const response = await axios.post(`${ONLY_OFFICE_SERVER}coauthoring/CommandService.ashx`, {
         c,
         key,
         userdata: '',
       });
-      loggerService.info('Run command response is: ', JSON.stringify(response.data));
+      loggerService.info('Run command response is: ', JSON.stringify(response));
       const { data } = response;
       switch (data.error) {
         case 0:
