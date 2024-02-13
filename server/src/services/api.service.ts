@@ -116,7 +116,6 @@ class ApiService implements IApiService {
         key,
         userdata: '',
       });
-      loggerService.info('Run command response is: ', JSON.stringify(response));
       const { data } = response;
       switch (data.error) {
         case 0:
